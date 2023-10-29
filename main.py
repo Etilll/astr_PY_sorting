@@ -4,7 +4,7 @@ import shutil
 from pathlib import Path
 from normalize import normalize
 
-KNOWN_FORMATS_REF = {'JPEG':'images', 'JPG':'images', 'PNG':'images','SVG':'images', 'AVI':'videos', 'MP4':'videos', 'MOV':'videos', 'MKV':'videos', 'DOC':'docs', 'DOCX':'docs', 'TXT':'docs', 'PDF':'docs', 'XLSX':'docs', 'PPTX':'docs', 'MP3':'music', 'OGG':'music', 'WAV':'music', 'AMR':'music', 'ZIP':'archives', 'GZ':'archives', 'TAR':'archives', 'RAR':'archives', '7Z':'archives'}
+KNOWN_FORMATS_REF = {'JPEG':'images', 'JPG':'images', 'PNG':'images','SVG':'images', 'AVI':'video', 'MP4':'video', 'MOV':'video', 'MKV':'video', 'DOC':'documents', 'DOCX':'documents', 'TXT':'documents', 'PDF':'documents', 'XLSX':'documents', 'PPTX':'documents', 'MP3':'audio', 'OGG':'audio', 'WAV':'audio', 'AMR':'audio', 'ZIP':'archives', 'GZ':'archives', 'TAR':'archives', 'RAR':'archives', '7Z':'archives'}
 
 FOLDERS = []
 ALL_LISTS = {}
@@ -41,7 +41,7 @@ def sorter(path: Path):
             else:
                 UNKNOWN_SUFFIXES.add(suff)
             
-        elif file.is_dir() and (file.name not in ('archives', 'video', 'audio', 'documents', 'images', 'MY_OTHER')):
+        elif file.is_dir() and (file.name not in ('archives', 'video', 'audio', 'documents', 'images', 'unknown')):
             FOLDERS.append(path / file.name)
             sorter(path / file.name)
 
@@ -90,6 +90,15 @@ def real_sorter(path: Path, output: Path):
             em_folder.rmdir()
         except OSError:
             print(f'Error during remove folder {em_folder}')
+
+
+def packet_start():
+    if sys.argv[1] and sys.argv[2]:
+        inut = Path(sys.argv[1])
+        output = Path(sys.argv[2])
+        real_sorter(Path(inut),Path(output))
+    else:
+        print('Doesnt work! Not enough/no arguments!\nCorrect usage: arg1=where_from(dir)    arg2=where_to(dir)')
 
 
 #####USAGE: python main.py --source 'source' --output 'output'
