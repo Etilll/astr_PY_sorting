@@ -1,2 +1,3 @@
 Script: Created (not) by : <b>Etil</b>
-#USAGE: python main.py --source 'source' --output 'output'#
+\n#USAGE: python main.py --source 'source' --output 'output'#
+\nDefinitely could've used sys module, but chose argparse
